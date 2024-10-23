@@ -2,6 +2,7 @@ import requests
 import pytest
 from endpoints.create_object import CreateObject
 from endpoints.get_object import GetObject
+from endpoints.update_object import UpdateObject
 payload = {
     "name": "Apple MacBook Pro 16",
     "data": {
@@ -45,6 +46,7 @@ def test_get_object(obj_id):
 
 
 def test_update_object(obj_id):
+    update_object_endpoint = UpdateObject()
     new_payload = {
         "name": "Apple MacBook Pro 20",
         "data": {
@@ -54,11 +56,9 @@ def test_update_object(obj_id):
             "Hard disk size": "1 TB"
         }
     }
-    response = requests.put(f"https://api.restful-api.dev/objects/{obj_id['id']}", json=new_payload)
-    response_json = response.json()
-    assert response.status_code == 200, f'Wrong status code, expected 200, actual {response.status_code}'
-    assert response_json['name'] == new_payload[
-        'name'], f'Wrong name, expected {new_payload["name"]}, actual {response_json["name"]}'
+    update_object_endpoint.update_object_by_id(obj_id['id'], new_payload)
+    update_object_endpoint.check_response_is_200()
+    update_object_endpoint.check_name(new_payload['name'])
 
 
 def test_delete_object(obj_id):
