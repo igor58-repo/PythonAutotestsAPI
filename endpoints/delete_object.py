@@ -1,7 +1,9 @@
 import requests
+from endpoints.base_endpoint import BaseEndpoint
 
 
-class DeleteObject:
+
+class DeleteObject(BaseEndpoint):
     response = None
     response_json = None
 
@@ -12,7 +14,3 @@ class DeleteObject:
     def check_response_id(self, obj_id):
         actual_response_id = self.response_json['id']
         assert actual_response_id == obj_id, f'Wrong obj_id, expected {obj_id}, actual {actual_response_id}'
-
-    def check_response_code(self, resp_code):
-        assert self.response.status_code == resp_code, (f'Wrong status code, expected {resp_code}, '
-                                                        f'actual {self.response.status_code}')
