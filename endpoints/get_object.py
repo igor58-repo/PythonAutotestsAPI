@@ -2,7 +2,6 @@ import requests
 from endpoints.base_endpoint import BaseEndpoint
 
 
-
 class GetObject(BaseEndpoint):
     response = None
     response_json = None

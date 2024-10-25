@@ -1,6 +1,3 @@
-import requests
-
-
 class BaseEndpoint:
     response = None
     response_json = None
