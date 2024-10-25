@@ -3,6 +3,8 @@ import pytest
 from endpoints.create_object import CreateObject
 from endpoints.get_object import GetObject
 from endpoints.update_object import UpdateObject
+from endpoints.delete_object import DeleteObject
+
 payload = {
     "name": "Apple MacBook Pro 16",
     "data": {
@@ -34,14 +36,14 @@ def test_create_object():
         }
     }
     new_object_endpoint.new_object(payload)
-    new_object_endpoint.check_response_is_200()
+    new_object_endpoint.check_response_code(200)
     new_object_endpoint.check_name(payload['name'])
 
 
 def test_get_object(obj_id):
     get_object_endpoint = GetObject()
     get_object_endpoint.get_object_by_id(obj_id['id'])
-    get_object_endpoint.check_response_is_200()
+    get_object_endpoint.check_response_code(200)
     get_object_endpoint.check_name(payload['name'])
 
 
@@ -57,12 +59,15 @@ def test_update_object(obj_id):
         }
     }
     update_object_endpoint.update_object_by_id(obj_id['id'], new_payload)
-    update_object_endpoint.check_response_is_200()
+    update_object_endpoint.check_response_code(200)
     update_object_endpoint.check_name(new_payload['name'])
 
 
 def test_delete_object(obj_id):
-    delete_response = requests.delete(f"https://api.restful-api.dev/objects/{obj_id['id']}")
-    get_response = requests.get(f"https://api.restful-api.dev/objects/{obj_id['id']}")
-    assert delete_response.status_code == 200, f'Wrong status code, expected 200, actual {delete_response.status_code}'
-    assert get_response.status_code == 404, f'Wrong status code, expected 404, actual {delete_response.status_code}'
+    delete_object_endpoint = DeleteObject()
+    delete_object_endpoint.delete_object_by_id(obj_id['id'])
+    delete_object_endpoint.check_response_code(200)
+    get_object_endpoint = GetObject()
+    get_object_endpoint.get_object_by_id(obj_id['id'])
+    get_object_endpoint.check_response_code(404)
+

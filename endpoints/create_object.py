@@ -12,5 +12,6 @@ class CreateObject:
     def check_name(self, name):
         assert self.response_json['name'] == name, f'Wrong name, expected {name}, actual {self.response_json["name"]}'
 
-    def check_response_is_200(self):
-        assert self.response.status_code == 200, f'Wrong status code, expected 200, actual {self.response.status_code}'
+    def check_response_code(self, resp_code):
+        assert self.response.status_code == resp_code, (f'Wrong status code, expected {resp_code}, '
+                                                        f'actual {self.response.status_code}')
